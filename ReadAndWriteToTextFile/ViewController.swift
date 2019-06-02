@@ -10,15 +10,16 @@ import UIKit
 
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
-    var allToys = ["Basket Ball", "Rubik's cube", "Darts", "Exploding Kittens", "Breakable Erasers"]
+    var allToys = ["None"]
     @IBOutlet weak var input: UITextField!
     @IBOutlet weak var myTableView: UITableView!
-    //let fileName = "toys"
-    //let fileExt = "txt"
     let strFileName = "spurIQArrayTest.txt"
     //let DocumentDirURL = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
     let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
     
+    @IBAction func inputPressEnterTriggered(_ sender: Any) {
+        updateData()
+    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return allToys.count
@@ -48,6 +49,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     @IBAction func SaveToArrayButton(_ sender: Any) {
+        updateData()
+    }
+    
+    func updateData(){
         if(input.text != "") {
             allToys.append(input.text!)
             writeArrayToFile()
@@ -58,13 +63,13 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     func readDataFromFile(){
         let fileURL = dir?.appendingPathComponent(strFileName)
+        print(fileURL)
         allToys = NSMutableArray(contentsOf: fileURL!) as! [String]
     }
     
     // This is to write array of data to a file
     func writeArrayToFile()
     {
-       // let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
      let fileURL = dir?.appendingPathComponent(strFileName)
        (allToys as NSArray).write(to: fileURL!, atomically: true)
     }
