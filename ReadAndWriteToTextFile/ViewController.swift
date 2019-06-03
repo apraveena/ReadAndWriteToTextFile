@@ -15,11 +15,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     @IBOutlet weak var myTableView: UITableView!
     let strFileName = "spurIQArrayTest.txt"
     //let DocumentDirURL = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+    
     let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
     
-    @IBAction func inputPressEnterTriggered(_ sender: Any) {
-        updateData()
-    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return allToys.count
@@ -52,6 +50,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         updateData()
     }
     
+    @IBAction func inputPressEnterTriggered(_ sender: Any) {
+        updateData()
+    }
+    
     func updateData(){
         if(input.text != "") {
             allToys.append(input.text!)
@@ -61,17 +63,20 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
     }
     
+    // This function reads from text file and makes the array.
     func readDataFromFile(){
         let fileURL = dir?.appendingPathComponent(strFileName)
-        print(fileURL)
-        allToys = NSMutableArray(contentsOf: fileURL!) as! [String]
+        print(fileURL as Any)
+        if( fileURL != nil ) {
+            allToys = NSMutableArray(contentsOf: fileURL!) as! [String]
+        }
     }
     
     // This is to write array of data to a file
     func writeArrayToFile()
     {
-     let fileURL = dir?.appendingPathComponent(strFileName)
-       (allToys as NSArray).write(to: fileURL!, atomically: true)
+        let fileURL = dir?.appendingPathComponent(strFileName)
+        (allToys as NSArray).write(to: fileURL!, atomically: true)
     }
     
 }
