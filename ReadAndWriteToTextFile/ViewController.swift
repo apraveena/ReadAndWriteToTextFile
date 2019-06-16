@@ -10,14 +10,13 @@ import UIKit
 
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
-    var allToys = ["None"]
+    var allToys = [""]
     @IBOutlet weak var input: UITextField!
     @IBOutlet weak var myTableView: UITableView!
-    let strFileName = "spurIQArrayTest.txt"
+    let strFileName = "spurIQArrayTest23.txt"
     //let DocumentDirURL = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
     
     let dir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
-    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return allToys.count
@@ -66,9 +65,17 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     // This function reads from text file and makes the array.
     func readDataFromFile(){
         let fileURL = dir?.appendingPathComponent(strFileName)
-        print(fileURL as Any)
-        if( fileURL != nil ) {
+        
+        let fileManager = FileManager.default
+        let pathComponent = dir!.appendingPathComponent(strFileName)
+        let filePath = pathComponent.path
+        
+        if fileManager.fileExists(atPath: filePath){
             allToys = NSMutableArray(contentsOf: fileURL!) as! [String]
+        }
+        else
+        {
+            writeArrayToFile()
         }
     }
     
